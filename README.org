@@ -1,0 +1,23 @@
+#+TITLE:SWWW Controller
+Simple Python script for controlling SWWW ✨
+* Features
+- 😈 Daemon for wallpaper slideshow
+- 🔋 Switching between static and dynamic wallpapers, useful for power saving
+- 📀 Instant wallpaper change with an i3blocks button
+* Usage
+First, ensure that the script is executable
+#+BEGIN_SRC bash
+  chmod +x swww-controller.py
+#+END_SRC
+Next, add the following line to your sway ~config~ file:
+#+BEGIN_SRC config
+exec_always --no-startup-id /path/to/swww-controller.py --daemon
+#+END_SRC
+Finally, add these lines to your i3blocks ~config~ file:
+#+BEGIN_SRC config
+[wallpaper]
+command=/path/to/swww-controller.py
+#+END_SRC
+For switching between dynamic and static wallpapers, call ~swww-controller.py~ with the argument ~--dynamic~ or ~--static~ to set the mode.
+* License
+GPLv3 or Later. © Sarthak Shah, 2025
