@@ -55,21 +55,30 @@ def get_image_files():
     
     return image_files
 
+def get_outputs():
+    """Get dict from `wlr-randr --json`"""
+    result = subprocess.run(["wlr-randr", "--json"], capture_output=True, text=True)
+    outputs = json.loads(result.stdout)
+    return outputs
+
 def set_random_wallpaper():
     """Set a random image as wallpaper"""
     images = get_image_files()
     if not images:
         print(f"No images found in directory {get_wallpaper_dir()}", file=sys.stderr)
         return False
-    
-    random_image = random.choice(images)
-    set_wallpaper(random_image)
+
+    outputs = get_outputs()
+    for output in outputs:
+        output_name = output["name"]
+        random_image = random.choice(images)
+        set_wallpaper(random_image, output_name)
     return True
 
-def set_wallpaper(image_path):
+def set_wallpaper(image_path, output_name):
     """Set the given image as wallpaper using swww"""
     try:
-        subprocess.run(["swww", "img", "--resize", "crop", image_path], check=True)
+        subprocess.run(["swww", "img", "--outputs", output_name, "--resize", "crop", image_path], check=True)
         return True
     except subprocess.CalledProcessError as e:
         print(f"Error setting wallpaper: {e}", file=sys.stderr)
@@ -89,7 +98,7 @@ def run_daemon(interval=60):
     print(f"Starting wallpaper rotation daemon with interval {interval} seconds")
 
     try:
-        subprocess.run(["swww-daemon"])
+        subprocess.Popen(["swww-daemon"])
     except subprocess.CalledProcessError as e:
         print(f"Error starting swww daemon: {e}", file=sys.stderr)
     
