@@ -4,6 +4,7 @@ Simple Python script for controlling SWWW ✨
 - 😈 Daemon for wallpaper slideshow
 - 🔋 Switching between static and dynamic wallpapers, useful for power saving
 - 📀 Instant wallpaper change with an i3blocks button
+- 🖥️ Supports multiple outputs
 * Usage
 First, ensure that the script is executable
 #+BEGIN_SRC bash
